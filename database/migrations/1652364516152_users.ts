@@ -5,9 +5,10 @@ export default class UsersSchema extends BaseSchema {
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id').primary()
+      table.uuid('id').primary().defaultTo(this.raw('uuid_generate_v4()'))
       table.string('email', 255).notNullable()
       table.string('password', 180).notNullable()
+      table.boolean('verified').notNullable().defaultTo(false)
       table.string('remember_me_token').nullable()
 
       /**

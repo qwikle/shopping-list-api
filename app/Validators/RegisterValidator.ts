@@ -24,17 +24,17 @@ export default class RegisterValidator {
    *    ```
    */
   public schema = schema.create({
-    first_name: schema.string({}, [
+    firstName: schema.string({}, [
       rules.alpha({ allow: ['dash'] }),
       rules.maxLength(50),
       rules.minLength(3),
     ]),
-    last_name: schema.string({}, [
+    lastName: schema.string({}, [
       rules.alpha({ allow: ['dash'] }),
       rules.maxLength(50),
       rules.minLength(3),
     ]),
-    birth_day: schema.date({ format: 'dd/mm/yyyy' }),
+    birthDay: schema.date({ format: 'dd/mm/yyyy' }),
     email: schema.string({}, [
       rules.email(),
       rules.confirmed(),
