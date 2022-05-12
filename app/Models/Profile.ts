@@ -15,6 +15,9 @@ export default class Profile extends BaseModel {
   @column({ serializeAs: null })
   public userId: string
 
+  @column()
+  public avatar?: string
+
   @column.date({
     autoCreate: false,
     serialize: (value: DateTime) => {

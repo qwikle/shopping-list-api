@@ -3,6 +3,7 @@ import Database from '@ioc:Adonis/Lucid/Database'
 import User from 'App/Models/User'
 import LoginValidator from 'App/Validators/LoginValidator'
 import RegisterValidator from 'App/Validators/RegisterValidator'
+import UpdateEmailValidator from 'App/Validators/UpdateEmailValidator'
 
 export default class AuthController {
   public async login({ request, auth, response }: HttpContextContract) {
@@ -26,12 +27,19 @@ export default class AuthController {
         await user.save()
         await user.related('profile').create({ firstName, lastName, birthDay })
         await trx.commit()
-        return response.send({ message: 'account created' })
+        return response.created({ message: 'account created' })
       } catch (e) {
         await trx.rollback()
         console.log(e)
         return response.badRequest('An error occured')
       }
     })
+  }
+
+  public async updateEmail({request, response, auth}) {
+    const {email } = await request.validate(UpdateEmailValidator)
+    auth.user.email = email
+    await auth.user.save()
+    return response.send({message: 'email changed'})
   }
 }

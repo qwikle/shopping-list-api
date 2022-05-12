@@ -9,6 +9,7 @@ export default class Profiles extends BaseSchema {
       table.uuid('user_id').references('id').inTable('users').notNullable().onDelete('cascade')
       table.string('first_name').notNullable()
       table.string('last_name').notNullable()
+      table.string('avatar').nullable()
       table.date('birth_day').notNullable()
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

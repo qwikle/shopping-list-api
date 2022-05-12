@@ -20,7 +20,8 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
- Route.group(() => {
+Route.group(() => {
   Route.post('/login', 'AuthController.login')
   Route.post('/register', 'AuthController.register')
- }).prefix('auth')
+  Route.post('/update-email', 'AuthController.updateEmail').middleware(['auth'])
+}).prefix('auth')

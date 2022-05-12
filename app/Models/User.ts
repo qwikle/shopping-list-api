@@ -14,7 +14,7 @@ export default class User extends BaseModel {
   public password: string
 
   @column()
-  isVerified: boolean
+  verified: boolean
 
   @column()
   public rememberMeToken?: string
