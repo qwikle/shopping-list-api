@@ -34,7 +34,7 @@ export default class RegisterValidator {
       rules.maxLength(50),
       rules.minLength(3),
     ]),
-    birthDay: schema.date({ format: 'dd/mm/yyyy' }),
+    birthDay: schema.date({ format: 'dd/mm/yyyy' }, [rules.before(10, 'years')]),
     email: schema.string({}, [
       rules.email(),
       rules.confirmed(),

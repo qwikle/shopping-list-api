@@ -11,10 +11,11 @@ export const UserFactory = Factory.define(User, ({ faker }) => {
   .relation('profile', () => ProfileFactory)
   .build()
 
+  //@ts-ignore
 export const ProfileFactory = Factory.define(Profile, ({ faker }) => {
-    return{
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-        birthDay: '18/08/1988'
-    }
+  return {
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    birthDay: '18/08/1988',
+  }
 }).build()

@@ -23,6 +23,7 @@ test('login with credentials', async ({ client }) => {
 
 test('update email address', async ({ client }) => {
   const user = await UserFactory.with('profile', 1).create()
+  console.log(user.toJSON())
   const response = client
     .post('/auth/update-email')
     .json({
