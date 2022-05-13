@@ -27,7 +27,7 @@ export default class UpdateValidator {
     email: schema.string({}, [
       rules.email(),
       rules.unique({ column: 'email', table: 'users' }),
-      rules.confirmed(),
+      rules.confirmed('emailConfirmation'),
     ]),
   })
 

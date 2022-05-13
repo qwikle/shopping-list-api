@@ -34,16 +34,16 @@ export default class RegisterValidator {
       rules.maxLength(50),
       rules.minLength(3),
     ]),
-    birthDay: schema.date({ format: 'dd/mm/yyyy' }, [rules.before(10, 'years')]),
+    birthDay: schema.date({ format: 'dd/mm/yyyy' }, [rules.before(16, 'years')]),
     email: schema.string({}, [
       rules.email(),
-      rules.confirmed(),
+      rules.confirmed('emailConfirmation'),
       rules.unique({ column: 'email', table: 'users' }),
       rules.trim(),
     ]),
     password: schema.string({}, [
       rules.regex(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$')),
-      rules.confirmed(),
+      rules.confirmed('passwordConfirmation'),
     ]),
   })
 

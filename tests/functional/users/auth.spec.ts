@@ -7,8 +7,8 @@ test('register a new account with profile', async ({ client }) => {
     email: 'qwikle@gmail.com',
     birthDay: '18/08/1988',
     password: 'Aazaaz69',
-    email_confirmation: 'qwikle@gmail.com',
-    password_confirmation: 'Aazaaz69',
+    emailConfirmation: 'qwikle@gmail.com',
+    passwordConfirmation: 'Aazaaz69',
   })
   ;(await response).assertStatus(201)
 })
@@ -18,6 +18,7 @@ test('login with credentials', async ({ client }) => {
     email: 'qwikle@gmail.com',
     password: 'Aazaaz69',
   })
+  console.log((await response).body())
   ;(await response).assertStatus(200)
 })
 
@@ -28,7 +29,7 @@ test('update email address', async ({ client }) => {
     .post('/auth/update-email')
     .json({
       email: 'aler@gmail.com',
-      email_confirmation: 'aler@gmail.com',
+      emailConfirmation: 'aler@gmail.com',
     })
     .loginAs(user)
   ;(await response).assertBody({message: 'email changed'})
