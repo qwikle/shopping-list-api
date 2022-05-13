@@ -1,0 +1,96 @@
+openapi: '3.0.2'
+info:
+  title: SHOPPING LIST API
+  version: '1.0'
+servers:
+  - url: http://localhost:3333
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: OAT
+paths:
+  /auth/register:
+    post:
+      summary: create a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: myemail@gmail.com
+                email_confirmation:
+                  type: string
+                  format: email
+                  example: myemail@gmail.com
+                password:
+                  type: string
+                  description: one lowercase one uppercase one number eight characters minimum
+                  example: MysuperPassword1
+                paswword_onfirmation:
+                  type: string
+                  example: MysuperPassword1
+                firstName:
+                  type: string
+                  minLength: 3
+                  maxLength: 50
+                  example: jhon
+                lastName:
+                  type: string
+                  minLength: 3
+                  maxLength: 50
+                  example: Doe
+                birthDay:
+                  type: string
+                  format: date
+                  description: format date dd/mm/yyyy minimum age 16 years
+                  example: 24/09/2000
+      responses:
+        '201':
+          description: return validation of creation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: accound created
+
+  /auth/login:
+    post:
+      summary: sign in with email and password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: myemail@gmail.com
+                password:
+                  type: string
+                  example: MysuperPassword1
+      responses:
+        '200':
+          description: "return access token"
+          content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      example: bearer
+                    token:
+                      type: string
+                      example: Y2wzNHFnMTYzMDAwMDd1c3RoeTgyYnM0dw.LzPaixh0gH7-1vU8xfmHwRZY2JprrnJDEaSZ7IyjSC_IdHG8eSHsahIntwin 
