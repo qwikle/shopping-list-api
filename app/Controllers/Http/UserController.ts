@@ -11,6 +11,8 @@ export default class UsersController {
   public async update({ request, response, auth }: HttpContextContract) {
     const payload = await request.validate(UpdateUserValidator)
     await auth.user!.merge(payload).save()
-    return response.send(payload)
+    return response.send({
+      
+    })
   }
 }

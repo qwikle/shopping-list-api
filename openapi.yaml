@@ -64,7 +64,7 @@ paths:
                   type: string
                   description: one lowercase one uppercase one number eight characters minimum
                   example: MysuperPassword1
-                paswwordCnfirmation:
+                passwordConfirmation:
                   type: string
                   example: MysuperPassword1
                 firstName:
@@ -82,6 +82,9 @@ paths:
                   format: date
                   description: format date dd/mm/yyyy minimum age 16 years
                   example: 24/09/2000
+                avatar:
+                  type: string
+                  nullable: true
       responses:
         "201":
           description: return validation of creation
@@ -177,3 +180,10 @@ paths:
                         format: date-time
         "401":
           $ref: "#/components/responses/401"
+    patch:
+      summary: Update the email or the user password
+      parameters:
+        - $ref: '#/components/parameters/authHeader'
+      responses:
+        '200':
+          description: return the modified field;
