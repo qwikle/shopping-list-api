@@ -9,7 +9,6 @@ test('register a new account with profile', async ({ client }) => {
     emailConfirmation: 'qwikle@gmail.com',
     passwordConfirmation: 'Aazaaz69',
   })
-  console.log((await response).body())
   ;(await response).assertAgainstApiSpec()
 })
 

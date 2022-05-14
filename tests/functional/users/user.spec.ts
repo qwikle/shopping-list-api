@@ -21,6 +21,5 @@ test('update user email or password', async ({ client }) => {
       emailConfirmation: 'user@example.com',
     })
     .loginAs(user)
-    console.log((await response).body())
   ;(await response).assertAgainstApiSpec()
 })
