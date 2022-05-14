@@ -57,14 +57,14 @@ paths:
                 email:
                   type: string
                   format: email
-                email_confirmation:
+                emailConfirmation:
                   type: string
                   format: email
                 password:
                   type: string
                   description: one lowercase one uppercase one number eight characters minimum
                   example: MysuperPassword1
-                paswword_onfirmation:
+                paswwordCnfirmation:
                   type: string
                   example: MysuperPassword1
                 firstName:
@@ -125,6 +125,8 @@ paths:
                   token:
                     type: string
                     example: Y2wzNHFnMTYzMDAwMDd1c3RoeTgyYnM0dw.LzPaixh0gH7-1vU8xfmHwRZY2JprrnJDEaSZ7IyjSC_IdHG8eSHsahIntwin
+        '400':
+          description: The email is not in the database or the password is not valid
         '422':
           $ref: "#/components/responses/422"
   /user:
