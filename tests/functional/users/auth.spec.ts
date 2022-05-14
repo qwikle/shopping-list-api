@@ -1,4 +1,5 @@
 import { test } from '@japa/runner'
+import { UserFactory } from 'Database/factories';
 test('register a new account with profile', async ({ client }) => {
   const response = client.post('/register').json({
     firstName: 'Ahmed',
@@ -18,4 +19,12 @@ test('login with credentials', async ({ client }) => {
     password: 'Aazaaz69',
   })
   ;(await response).assertAgainstApiSpec()
+})
+
+test('delete account', async ({client}) => {
+  const user = await UserFactory.with('profile', 1).create()
+  const response = client.delete('/user').json({
+    deleteConfirmation: true
+  }).loginAs(user)
+  await (await response).assertAgainstApiSpec()
 })

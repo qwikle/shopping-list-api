@@ -23,11 +23,3 @@ test('update user email or password', async ({ client }) => {
     .loginAs(user)
   ;(await response).assertAgainstApiSpec()
 })
-
-test('delete account', async ({client}) => {
-  const user = await UserFactory.with('profile', 1).create()
-  const response = client.delete('/user').json({
-    deleteConfirmation: true
-  }).loginAs(user)
-  await (await response).assertAgainstApiSpec()
-})
