@@ -186,4 +186,33 @@ paths:
         - $ref: '#/components/parameters/authHeader'
       responses:
         '200':
-          description: return the modified field;
+          description: return the modified field
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    format: email
+                    nullable: true
+                  password:
+                    type: string
+                    example: MysuperPassword1
+                    nullable: true
+        '400':
+          description: Returned if the password changed and old password is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid password
+        '401':
+          $ref: '#/components/responses/401'
+        '422':
+          $ref: '#/components/responses/422'
+
+                    

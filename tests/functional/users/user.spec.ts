@@ -9,14 +9,18 @@ test('retrieve user informations', async ({client}) => {
 })
 
 
-// test('update email address', async ({ client }) => {
-//   const user = await UserFactory.with('profile', 1).create()
-//   const response = client
-//     .patch('/user/update-email')
-//     .json({
-//       email: 'aler@gmail.com',
-//       emailConfirmation: 'aler@gmail.com',
-//     })
-//     .loginAs(user)
-//   ;(await response).assertAgainstApiSpec()
-// })
+test('update user email or password', async ({ client }) => {
+  const user = await UserFactory.with('profile', 1).create()
+  const response = client
+    .patch('/user/')
+    .json({
+      password: 'Aazaaz69',
+      passwordConfirmation: 'Aazaaz69',
+      oldPassword: 'Aazaaz69',
+      email: 'user@example.com',
+      emailConfirmation: 'user@example.com',
+    })
+    .loginAs(user)
+    console.log((await response).body())
+  ;(await response).assertAgainstApiSpec()
+})
