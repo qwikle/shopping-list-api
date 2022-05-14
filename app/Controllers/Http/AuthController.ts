@@ -3,7 +3,6 @@ import Database from '@ioc:Adonis/Lucid/Database'
 import User from 'App/Models/User'
 import LoginValidator from 'App/Validators/LoginValidator'
 import RegisterValidator from 'App/Validators/RegisterValidator'
-import UpdateEmailValidator from 'App/Validators/UpdateEmailValidator'
 
 export default class AuthController {
   public async login({ request, auth, response }: HttpContextContract) {
@@ -36,10 +35,4 @@ export default class AuthController {
     })
   }
 
-  public async updateEmail({request, response, auth}) {
-    const {email } = await request.validate(UpdateEmailValidator)
-    auth.user.email = email
-    await auth.user.save()
-    return response.send({message: 'email changed'})
-  }
 }

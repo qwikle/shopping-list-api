@@ -1,8 +1,11 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, HasOne, hasOne } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
+import { CamelCaseNamingStrategy } from './camelCaseNamingStrategy'
 
 export default class Profile extends BaseModel {
+  public static namingStrategy = new CamelCaseNamingStrategy()
+  
   @column({ isPrimary: true, serializeAs: null })
   public id: number
 
@@ -18,7 +21,9 @@ export default class Profile extends BaseModel {
   @column()
   public avatar?: string
 
-  @column.dateTime()
+  @column.dateTime({serialize: (value: DateTime) => {
+    return value.toFormat('dd/MM/yyyy')
+  }})
   public birthDay: DateTime
 
   @column.dateTime({ autoCreate: true, serializeAs: null })

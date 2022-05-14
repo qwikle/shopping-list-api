@@ -2,8 +2,10 @@ import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
 import { column, beforeSave, BaseModel, hasOne, HasOne } from '@ioc:Adonis/Lucid/Orm'
 import Profile from './Profile'
+import { CamelCaseNamingStrategy } from './camelCaseNamingStrategy'
 
 export default class User extends BaseModel {
+  public static namingStrategy = new CamelCaseNamingStrategy()
   @column({ isPrimary: true })
   public id: number
 
@@ -16,7 +18,7 @@ export default class User extends BaseModel {
   @column()
   verified: boolean
 
-  @column()
+  @column({serializeAs: null})
   public rememberMeToken?: string
 
   @column.dateTime({ autoCreate: true })

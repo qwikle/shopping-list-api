@@ -1,19 +1,52 @@
-openapi: '3.0.2'
+openapi: "3.0.2"
 info:
   title: SHOPPING LIST API
-  version: '1.0'
+  version: "1.0"
 servers:
   - url: http://localhost:3333
 components:
+  parameters:
+    authHeader:
+      in: header
+      required: true
+      name: Authorization
+      description: Add the bearer token to the Header to access the Endpoint.
+      schema:
+        type: object
+        properties:
+          Authorization:
+            type: string
+            example: bearer Y2wzNHFnMTYzMDAwMDd1c3RoeTgyYnM0dw.LzPaixh0gH7-1vU8xfmHwRZY2JprrnJDEaSZ7IyjSC_IdHG8eSHsahIntwin
+  responses:
+    "401":
+      description: The access token is not provided or expired.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "E_UNAUTHORIZED_ACCESS: Unauthorized access"
+    "422":
+      description: error on one or more field in the Request Body
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              errors:
+                type: array
+                example: [ {rule: required, field: email,message: required validation failed on email}]
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: OAT
 paths:
-  /auth/register:
+  /register:
     post:
-      summary: create a user
+      summary: register a user
       requestBody:
         required: true
         content:
@@ -24,11 +57,9 @@ paths:
                 email:
                   type: string
                   format: email
-                  example: myemail@gmail.com
                 email_confirmation:
                   type: string
                   format: email
-                  example: myemail@gmail.com
                 password:
                   type: string
                   description: one lowercase one uppercase one number eight characters minimum
@@ -52,7 +83,7 @@ paths:
                   description: format date dd/mm/yyyy minimum age 16 years
                   example: 24/09/2000
       responses:
-        '201':
+        "201":
           description: return validation of creation
           content:
             application/json:
@@ -62,8 +93,9 @@ paths:
                   message:
                     type: string
                     example: accound created
-
-  /auth/login:
+        '422':
+          $ref: "#/components/responses/422"
+  /login:
     post:
       summary: sign in with email and password
       requestBody:
@@ -76,21 +108,70 @@ paths:
                 email:
                   type: string
                   format: email
-                  example: myemail@gmail.com
                 password:
                   type: string
                   example: MysuperPassword1
       responses:
-        '200':
-          description: "return access token"
+        "200":
+          description: return access token
           content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    type:
-                      type: string
-                      example: bearer
-                    token:
-                      type: string
-                      example: Y2wzNHFnMTYzMDAwMDd1c3RoeTgyYnM0dw.LzPaixh0gH7-1vU8xfmHwRZY2JprrnJDEaSZ7IyjSC_IdHG8eSHsahIntwin 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: bearer
+                  token:
+                    type: string
+                    example: Y2wzNHFnMTYzMDAwMDd1c3RoeTgyYnM0dw.LzPaixh0gH7-1vU8xfmHwRZY2JprrnJDEaSZ7IyjSC_IdHG8eSHsahIntwin
+        '422':
+          $ref: "#/components/responses/422"
+  /user:
+    get:
+      summary: Retrieve the logged user object
+      parameters:
+        - $ref: '#/components/parameters/authHeader'
+      responses:
+        "200":
+          description: return the user object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  email:
+                    type: string
+                    format: email
+                  verified:
+                    type: boolean
+                    example: false
+                  createdAt:
+                    type: string
+                    format: date-time
+                  updatedAt:
+                    type: string
+                    format: date-time
+                  profile:
+                    type: object
+                    properties:
+                      firstName:
+                        type: string
+                        example: Eshter
+                      lastName:
+                        type: string
+                        example: Miller
+                      avatar:
+                        type: string
+                        example: https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1101.jpg
+                      birthDay:
+                        type: string
+                        example: 20/04/2000
+                      updatedAt:
+                        type: string
+                        format: date-time
+        "401":
+          $ref: "#/components/responses/401"

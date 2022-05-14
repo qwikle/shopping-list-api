@@ -24,11 +24,16 @@ export default class UpdateValidator {
    *    ```
    */
   public schema = schema.create({
-    email: schema.string({}, [
+    email: schema.string.optional({}, [
       rules.email(),
       rules.unique({ column: 'email', table: 'users' }),
       rules.confirmed('emailConfirmation'),
     ]),
+    password: schema.string.optional({}, [
+      rules.regex(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$')),
+      rules.confirmed('passwordConfirmation'),
+    ]),
+    oldPassword: schema.string.optional({}, [rules.requiredIfExists('password')])
   })
 
   /**

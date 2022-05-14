@@ -1,36 +1,23 @@
 import { test } from '@japa/runner'
-import { UserFactory } from 'Database/factories'
 test('register a new account with profile', async ({ client }) => {
-  const response = client.post('/auth/register').json({
+  const response = client.post('/register').json({
     firstName: 'Ahmed',
     lastName: 'Mahmoud',
     email: 'qwikle@gmail.com',
-    birthDay: '18/08/1988',
     password: 'Aazaaz69',
+    birthDay: '18/08/1988',
     emailConfirmation: 'qwikle@gmail.com',
     passwordConfirmation: 'Aazaaz69',
   })
-  ;(await response).assertStatus(201)
+  console.log((await response).body())
+  ;(await response).assertAgainstApiSpec()
 })
 
 test('login with credentials', async ({ client }) => {
-  const response = client.post('/auth/login').json({
+  const response = client.post('/login').json({
     email: 'qwikle@gmail.com',
     password: 'Aazaaz69',
   })
-  console.log((await response).body())
-  ;(await response).assertStatus(200)
+  ;(await response).assertAgainstApiSpec()
 })
 
-test('update email address', async ({ client }) => {
-  const user = await UserFactory.with('profile', 1).create()
-  console.log(user.toJSON())
-  const response = client
-    .post('/auth/update-email')
-    .json({
-      email: 'aler@gmail.com',
-      emailConfirmation: 'aler@gmail.com',
-    })
-    .loginAs(user)
-  ;(await response).assertBody({message: 'email changed'})
-})
