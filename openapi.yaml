@@ -18,6 +18,15 @@ components:
             type: string
             example: bearer Y2wzNHFnMTYzMDAwMDd1c3RoeTgyYnM0dw.LzPaixh0gH7-1vU8xfmHwRZY2JprrnJDEaSZ7IyjSC_IdHG8eSHsahIntwin
   responses:
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
     "401":
       description: The access token is not provided or expired.
       content:
@@ -129,7 +138,7 @@ paths:
                     type: string
                     example: Y2wzNHFnMTYzMDAwMDd1c3RoeTgyYnM0dw.LzPaixh0gH7-1vU8xfmHwRZY2JprrnJDEaSZ7IyjSC_IdHG8eSHsahIntwin
         '400':
-          description: The email is not in the database or the password is not valid
+          $ref: '#/components/responses/400'
         '422':
           $ref: "#/components/responses/422"
   /user:
@@ -201,7 +210,7 @@ paths:
                     example: MysuperPassword1
                     nullable: true
         '400':
-          description: Returned if the password changed and old password is invalid.
+          $ref: '#/components/responses/400'
           content:
             application/json:
               schema:
@@ -214,5 +223,31 @@ paths:
           $ref: '#/components/responses/401'
         '422':
           $ref: '#/components/responses/422'
-
-                    
+    delete:
+      summary: Delete the user account
+      parameters:
+        - $ref: '#/components/parameters/authHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                deleteConfirmation:
+                  type: boolean
+      responses:
+        '204':
+          description: The user account was deleted sucessfully
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+                description: no content
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '422':
+          $ref: '#/components/responses/422'

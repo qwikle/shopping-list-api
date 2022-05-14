@@ -1,6 +1,7 @@
 import Hash from '@ioc:Adonis/Core/Hash'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
+import DeleteValidator from 'App/Validators/DeleteValidator'
 import UpdateUserValidator from 'App/Validators/UpdateUserValidator'
 
 export default class UsersController {
@@ -21,4 +22,14 @@ export default class UsersController {
     await auth.user!.merge(payload).save()
     return response.send(payload)
   }
+
+  public async delete({auth, response, request}: HttpContextContract) {
+    const {deleteConfirmation}= await request.validate(DeleteValidator)
+    if( deleteConfirmation){
+      await auth.user!.delete()
+      return response.noContent()
+    }
+    return response.badRequest({message: 'delete confirmation required'})
+  }
+
 }

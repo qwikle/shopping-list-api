@@ -19,4 +19,3 @@ test('login with credentials', async ({ client }) => {
   })
   ;(await response).assertAgainstApiSpec()
 })
-

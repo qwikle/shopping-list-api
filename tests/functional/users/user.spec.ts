@@ -4,7 +4,7 @@ import { UserFactory } from 'Database/factories'
 
 test('retrieve user informations', async ({client}) => {
   const user = await UserFactory.with('profile', 1).create()
-  const response = client.get('/user/').loginAs(user)
+  const response = client.get('/user').loginAs(user)
   await (await response).assertAgainstApiSpec()
 })
 
@@ -12,7 +12,7 @@ test('retrieve user informations', async ({client}) => {
 test('update user email or password', async ({ client }) => {
   const user = await UserFactory.with('profile', 1).create()
   const response = client
-    .patch('/user/')
+    .patch('/user')
     .json({
       password: 'Aazaaz69',
       passwordConfirmation: 'Aazaaz69',
@@ -22,4 +22,12 @@ test('update user email or password', async ({ client }) => {
     })
     .loginAs(user)
   ;(await response).assertAgainstApiSpec()
+})
+
+test('delete account', async ({client}) => {
+  const user = await UserFactory.with('profile', 1).create()
+  const response = client.delete('/user').json({
+    deleteConfirmation: true
+  }).loginAs(user)
+  await (await response).assertAgainstApiSpec()
 })
