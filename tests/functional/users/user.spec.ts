@@ -5,7 +5,6 @@ import { UserFactory } from 'Database/factories'
 test('retrieve user informations', async ({client}) => {
   const user = await UserFactory.with('profile', 1).create()
   const response = client.get('/user/').loginAs(user)
-  console.log((await response).body())
   await (await response).assertAgainstApiSpec()
 })
 
