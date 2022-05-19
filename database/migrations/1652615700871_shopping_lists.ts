@@ -1,16 +1,14 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
-export default class Profiles extends BaseSchema {
-  protected tableName = 'profiles'
+export default class ProductList extends BaseSchema {
+  protected tableName = 'product_lists'
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
-      table.uuid('user_id').references('id').inTable('users').notNullable().onDelete('CASCADE')
-      table.string('first_name').notNullable()
-      table.string('last_name').notNullable()
-      table.string('avatar').nullable()
-      table.date('birth_day').notNullable()
+      table.uuid('id').primary().defaultTo(this.raw('uuid_generate_v4()'))
+      table.uuid('owner').references('id').inTable('users').notNullable().onDelete('CASCADE')
+      table.string('name', 100).nullable()
+      table.string('visibility').checkBetween(['family, owner']).notNullable().defaultTo('owner')
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
