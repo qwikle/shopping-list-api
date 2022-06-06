@@ -1,8 +1,12 @@
+import Redis from '@ioc:Adonis/Addons/Redis'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Database from '@ioc:Adonis/Lucid/Database'
+import Event from '@ioc:Adonis/Core/Event'
 import User from 'App/Models/User'
 import LoginValidator from 'App/Validators/LoginValidator'
 import RegisterValidator from 'App/Validators/RegisterValidator'
+import Utils from '../../../services/utils/utils'
+import EmailValidator from 'App/Validators/EmailValidator'
 
 export default class AuthController {
   public async login({ request, auth, response }: HttpContextContract) {
@@ -33,6 +37,17 @@ export default class AuthController {
         return response.badRequest('An error occured')
       }
     })
+  }
+
+  public async forgotPassword({ request, response } : HttpContextContract) {
+    const { email } = await request.validate(EmailValidator)
+    const user = await User.findBy('email', email)
+    if (!user) {
+      return response.badRequest({ message: 'User not found' })
+    }
+    const token = await Utils.setToken(email)
+    Event.emit('user:forgotPassword', { user, token })
+    return response.created({ message: 'Token sent' })
   }
 
 }
