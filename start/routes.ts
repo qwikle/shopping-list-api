@@ -22,3 +22,4 @@ import Route from '@ioc:Adonis/Core/Route'
 import './routes/user'
 Route.post('/login', 'AuthController.login')
 Route.post('/register', 'AuthController.register')
+Route.post('/forgot-password', 'AuthController.forgotPassword')
