@@ -141,6 +141,33 @@ paths:
           $ref: '#/components/responses/400'
         '422':
           $ref: "#/components/responses/422"
+
+  /forgot-password:
+    post:
+      summary: get a code to reinitialize password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+      responses:
+        "201":
+          description: return success message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "400":
+          $ref: '#/components/responses/400'
+
   /user:
     get:
       summary: Retrieve the logged user object
