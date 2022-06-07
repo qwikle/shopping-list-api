@@ -45,7 +45,6 @@ export default class RegisterValidator {
       rules.regex(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$')),
       rules.confirmed('passwordConfirmation'),
     ]),
-    avatar: schema.file.optional({ size: '3mb', extnames: ['gif', 'jpg', 'png'] }),
   })
 
   /**

@@ -91,9 +91,6 @@ paths:
                   format: date
                   description: format date dd/mm/yyyy minimum age 16 years
                   example: 24/09/2000
-                avatar:
-                  type: string
-                  nullable: true
       responses:
         "201":
           description: return validation of creation
