@@ -1,11 +1,10 @@
-import Redis from '@ioc:Adonis/Addons/Redis'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Database from '@ioc:Adonis/Lucid/Database'
 import Event from '@ioc:Adonis/Core/Event'
 import User from 'App/Models/User'
 import LoginValidator from 'App/Validators/LoginValidator'
 import RegisterValidator from 'App/Validators/RegisterValidator'
-import Utils from '../../../services/utils/utils'
+import TokenUtils from '../../../services/utils/utils'
 import EmailValidator from 'App/Validators/EmailValidator'
 
 export default class AuthController {
@@ -45,7 +44,7 @@ export default class AuthController {
     if (!user) {
       return response.badRequest({ message: 'User not found' })
     }
-    const token = await Utils.setToken(email)
+    const token = await TokenUtils.setToken(email)
     Event.emit('user:forgotPassword', { user, token })
     return response.created({ message: 'Token sent' })
   }
