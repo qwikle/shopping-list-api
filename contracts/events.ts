@@ -32,5 +32,9 @@ declare module '@ioc:Adonis/Core/Event' {
       user: User,
       token: string,
     };
+    'user:verifyEmail': {
+      user: User,
+      token: string,
+    };
   }
 }
