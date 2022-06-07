@@ -4,7 +4,7 @@ import Event from '@ioc:Adonis/Core/Event'
 import User from 'App/Models/User'
 import LoginValidator from 'App/Validators/LoginValidator'
 import RegisterValidator from 'App/Validators/RegisterValidator'
-import TokenUtils from '../../../services/utils/utils'
+import TokenUtils, { TokenType } from '../../../services/utils/utils'
 import EmailValidator from 'App/Validators/EmailValidator'
 
 export default class AuthController {
@@ -28,6 +28,8 @@ export default class AuthController {
         user.useTransaction(trx)
         await user.save()
         await user.related('profile').create({ firstName, lastName, birthDay })
+        const token = await TokenUtils.setToken(email, TokenType.verifyEmail)
+        await Event.emit('user:verifyEmail', { user, token })
         await trx.commit()
         return response.created({ message: 'account created' })
       } catch (e) {
@@ -38,15 +40,15 @@ export default class AuthController {
     })
   }
 
-  public async forgotPassword({ request, response } : HttpContextContract) {
+  public async forgotPassword({ request, response }: HttpContextContract) {
     const { email } = await request.validate(EmailValidator)
     const user = await User.findBy('email', email)
     if (!user) {
       return response.badRequest({ message: 'User not found' })
     }
-    const token = await TokenUtils.setToken(email)
-    Event.emit('user:forgotPassword', { user, token })
+    await user.load('profile')
+    const token = await TokenUtils.setToken(email, TokenType.resetPassword)
+    await Event.emit('user:forgotPassword', { user, token })
     return response.created({ message: 'Token sent' })
   }
-
 }
