@@ -28,3 +28,9 @@ test('delete account', async ({client}) => {
   }).loginAs(user)
   await (await response).assertAgainstApiSpec()
 })
+
+test('forgot password', async ({client}) => {
+  const response = client.post('/forgot-password').json({
+    email: 'test@test.com',})
+  ;(await response).assertAgainstApiSpec()
+})
