@@ -1,0 +1,17 @@
+
+<mjml>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+
+        <mj-text font-size="40px" align="center">Confirmation email</mj-text>
+
+        <mj-divider border-color="#F45E43"></mj-divider>
+
+        <mj-text font-size="15px" color="#00000" font-family="helvetica">Bonjour, {{ user.profile.firstName }}</mj-text>
+				<mj-text font-size="15px" color="#00000" font-family="helvetica">Ci joint le code de Confirmation à entrer dans l'application pour valider votre Email il est valide 12h.</mj-text>
+                <mj-text font-size="15px" color="#00000" font-family="helvetica">Code : {{ token }}</mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
