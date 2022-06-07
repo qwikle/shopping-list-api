@@ -11,4 +11,14 @@ export default class User {
             console.log(error)
         }
     }
+
+    public async onVerifyEmail(data: EventsList['user:verifyEmail']) {
+        const { user, token } = data
+        try {
+        const email = new ForgotPassword(user, token)
+        await email.sendLater()
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }
