@@ -17,9 +17,7 @@ export default class ResetedPassword extends BaseMailer {
   // public mailer = this.mail.use()
 
   public html = new Promise<string>(async (resolve) => {
-    const html = mjml(
-      await View.render('emails/reseted_password_mjml', { user: this.user })
-    ).html
+    const html = mjml(await View.render('emails/reseted_password_mjml', { user: this.user })).html
     resolve(html)
   })
 
@@ -30,7 +28,7 @@ export default class ResetedPassword extends BaseMailer {
    * Use this method to prepare the email message. The method can
    * also be async.
    */
-   public async prepare(message: MessageContract) {
+  public async prepare(message: MessageContract) {
     message
       .subject('ShoppingList:[Adresse email vérifiée]')
       .from('admin@shoppingList.com')
