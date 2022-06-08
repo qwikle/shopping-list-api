@@ -23,3 +23,4 @@ import './routes/user'
 Route.post('/login', 'AuthController.login')
 Route.post('/register', 'AuthController.register')
 Route.post('/forgot-password', 'AuthController.forgotPassword')
+Route.post('/reset-password', 'AuthController.resetPassword')
