@@ -1,6 +1,6 @@
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Regex from 'services/utils/regex'
+import Regex from '../../services/utils/regex'
 
 export default class VerifyEmailValidator {
   constructor(protected ctx: HttpContextContract) {}
@@ -30,7 +30,7 @@ export default class VerifyEmailValidator {
       rules.trim(),
       rules.exists({ table: 'users', column: 'email' }),
     ]),
-    token: schema.string({}, [rules.regex(Regex.alphanumeric)]),
+    token: schema.string({}, [rules.regex(Regex.code())]),
   })
 
   /**
