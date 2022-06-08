@@ -1,5 +1,6 @@
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Regex from 'services/utils/regex'
 
 export default class RegisterValidator {
   constructor(protected ctx: HttpContextContract) {}
@@ -42,7 +43,7 @@ export default class RegisterValidator {
       rules.trim(),
     ]),
     password: schema.string({}, [
-      rules.regex(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$')),
+      rules.regex(Regex.password),
       rules.confirmed('passwordConfirmation'),
     ]),
   })
