@@ -32,7 +32,7 @@ export default class VerifyEmail extends BaseMailer {
    */
    public async prepare(message: MessageContract) {
     message
-      .subject('ShoppingList:[Validation de votre adresse email]')
+      .subject('Validation de votre adresse email')
       .from('admin@shoppingList.com')
       .to(this.user.email)
       .html(await this.html)
