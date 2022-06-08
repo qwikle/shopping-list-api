@@ -30,6 +30,17 @@ export default class TokenUtils {
         const t = await Redis.get(`mobile:${type}:token${email}`)
         return t === token
     }
+
+    public static async existsToken(email: string, type: TokenType): Promise<boolean> {
+        let t = await Redis.get(`mobile:${type}:token${email}`)
+        t
+        return t !== null
+    }
+
+    public static async deleteAllTokens(email: string) {
+        await Redis.del(`mobile:resetPassword:token${email}`)
+        await Redis.del(`mobile:verifyEmail:token${email}`)
+    }
 }
 
 export enum TokenType { verifyEmail = 'verifyEmail', resetPassword = 'resetPassword', }
