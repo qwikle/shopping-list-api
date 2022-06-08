@@ -44,6 +44,6 @@ export default class TokenUtils {
 }
 
 export enum TokenType {
-  verifyEmail = 'verifyEmail',
-  resetPassword = 'resetPassword',
+  CHECK_EMAIL = 'check email',
+  RESET_PASSWORD = 'reset password',
 }
