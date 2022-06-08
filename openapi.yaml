@@ -56,6 +56,8 @@ paths:
   /register:
     post:
       summary: register a user
+      tags:
+        - Auth
       requestBody:
         required: true
         content:
@@ -107,6 +109,8 @@ paths:
   /login:
     post:
       summary: sign in with email and password
+      tags:
+        - Auth
       requestBody:
         required: true
         content:
@@ -142,6 +146,8 @@ paths:
   /forgot-password:
     post:
       summary: get a code to reinitialize password
+      tags:
+        - Auth
       requestBody:
         required: true
         content:
@@ -168,6 +174,8 @@ paths:
   /user:
     get:
       summary: Retrieve the logged user object
+      tags:
+        - User
       parameters:
         - $ref: '#/components/parameters/authHeader'
       responses:
@@ -215,6 +223,8 @@ paths:
           $ref: "#/components/responses/401"
     patch:
       summary: Update the email or the user password
+      tags:
+        - User
       parameters:
         - $ref: '#/components/parameters/authHeader'
       responses:
@@ -249,6 +259,8 @@ paths:
           $ref: '#/components/responses/422'
     delete:
       summary: Delete the user account
+      tags:
+        - User
       parameters:
         - $ref: '#/components/parameters/authHeader'
       requestBody:
@@ -275,3 +287,12 @@ paths:
           $ref: '#/components/responses/401'
         '422':
           $ref: '#/components/responses/422'
+  /reset-password:
+    post:
+      description: 'reset the password'
+      tags:
+        - Auth
+      parameters: []
+      responses:
+        '200':
+          description: OK
