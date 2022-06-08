@@ -1,5 +1,5 @@
 import { test } from '@japa/runner'
-import { UserFactory } from 'Database/factories';
+import { UserFactory } from 'Database/factories'
 test('register a new account with profile', async ({ client }) => {
   const response = client.post('/register').json({
     firstName: 'Ahmed',
@@ -21,16 +21,20 @@ test('login with credentials', async ({ client }) => {
   ;(await response).assertAgainstApiSpec()
 })
 
-test('delete account', async ({client}) => {
+test('delete account', async ({ client }) => {
   const user = await UserFactory.with('profile', 1).create()
-  const response = client.delete('/user').json({
-    deleteConfirmation: true
-  }).loginAs(user)
+  const response = client
+    .delete('/user')
+    .json({
+      deleteConfirmation: true,
+    })
+    .loginAs(user)
   await (await response).assertAgainstApiSpec()
 })
 
-test('forgot password', async ({client}) => {
+test('forgot password', async ({ client }) => {
   const response = client.post('/forgot-password').json({
-    email: 'test@test.com',})
+    email: 'test@test.com',
+  })
   ;(await response).assertAgainstApiSpec()
 })
