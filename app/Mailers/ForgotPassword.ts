@@ -16,7 +16,7 @@ export default class ForgotPassword extends BaseMailer {
   // public mailer = this.mail.use()
   public html = new Promise<string>(async (resolve) => {
     const html = mjml(
-      await View.render('emails/forgot-password_mjml', { user: this.user, token: this.token })
+      await View.render('emails/forgot_password_mjml', { user: this.user, token: this.token })
     ).html
     resolve(html)
   })
