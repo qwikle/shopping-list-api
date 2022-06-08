@@ -36,5 +36,11 @@ declare module '@ioc:Adonis/Core/Event' {
       user: User,
       token: string,
     };
+    'user:verified': {
+      user: User,
+    };
+    'user:resetedPassword': {
+      user: User,
+    };
   }
 }
