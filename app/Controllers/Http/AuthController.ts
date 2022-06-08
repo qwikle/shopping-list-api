@@ -8,6 +8,7 @@ import TokenUtils, { TokenType } from '../../../services/utils/utils'
 import EmailValidator from 'App/Validators/EmailValidator'
 import ResetPasswordValidator from 'App/Validators/ResetPasswordValidator'
 import VerifyEmailValidator from 'App/Validators/VerifyEmailValidator'
+import CheckTokenValidator from 'App/Validators/CheckTokenValidator'
 
 export default class AuthController {
   public async login({ request, auth, response }: HttpContextContract) {
@@ -30,7 +31,8 @@ export default class AuthController {
         user.useTransaction(trx)
         await user.save()
         await user.related('profile').create({ firstName, lastName, birthDay })
-        const token = await TokenUtils.setToken(email, TokenType.verifyEmail)
+        await user.load('profile')
+        const token = await TokenUtils.setToken(email, TokenType.CHECK_EMAIL)
         await Event.emit('user:verifyEmail', { user, token })
         await trx.commit()
         return response.created({ message: 'account created' })
@@ -49,7 +51,7 @@ export default class AuthController {
       return response.badRequest({ message: 'User not found' })
     }
     await user.load('profile')
-    const token = await TokenUtils.setToken(email, TokenType.resetPassword)
+    const token = await TokenUtils.setToken(email, TokenType.RESET_PASSWORD)
     await Event.emit('user:forgotPassword', { user, token })
     return response.created({ message: 'Token sent' })
   }
@@ -60,25 +62,39 @@ export default class AuthController {
     if (!user) {
       return response.badRequest({ message: 'User not found' })
     }
-    if (!(await TokenUtils.checkToken(email, token, TokenType.resetPassword))) {
+    if (!(await TokenUtils.checkToken(email, token, TokenType.RESET_PASSWORD))) {
       return response.badRequest({ message: 'Invalid token' })
     }
     await user.merge({ password }).save()
-    await TokenUtils.deleteToken(email, TokenType.resetPassword)
+    await TokenUtils.deleteToken(email, TokenType.RESET_PASSWORD)
+    await user.load('profile')
+    await Event.emit('user:resetedPassword', { user })
     return response.send({ message: 'Password updated' })
   }
 
-  public async verifyEmail({ request, response }: HttpContextContract) {
+  public async verifyEmail({ request, response, auth }: HttpContextContract) {
     const { email, token } = await request.validate(VerifyEmailValidator)
-    const user = await User.findBy('email', email)
-    if (!user) {
-      return response.badRequest({ message: 'User not found' })
-    }
-    if (!(await TokenUtils.checkToken(email, token, TokenType.verifyEmail))) {
+    const user = auth.user!
+    if (!(await TokenUtils.checkToken(email, token, TokenType.CHECK_EMAIL))) {
       return response.badRequest({ message: 'Invalid token' })
     }
     await user.merge({ verified: true }).save()
-    await TokenUtils.deleteToken(email, TokenType.verifyEmail)
+    await TokenUtils.deleteToken(email, TokenType.CHECK_EMAIL)
+    await user.load('profile')
+    Event.emit('user:verified', { user })
     return response.send({ message: 'Email verified' })
+  }
+
+  public async logout({ auth, response }: HttpContextContract) {
+    await auth.logout()
+    return response.noContent()
+  }
+
+  public async checkTokenCode({ request, response }: HttpContextContract) {
+    const { email, type } = await request.validate(CheckTokenValidator)
+    if (!(await TokenUtils.existsToken(email, type))) {
+      return response.badRequest({ message: 'Invalid token' })
+    }
+    return response.send({ message: 'Token valid' })
   }
 }
