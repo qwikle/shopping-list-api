@@ -2,6 +2,7 @@ import type { EventsList } from '@ioc:Adonis/Core/Event'
 import ForgotPassword from 'App/Mailers/ForgotPassword'
 import ResetedPassword from 'App/Mailers/ResetedPassword'
 import VerifiedEmail from 'App/Mailers/VerifiedEmail'
+import VerifyEmail from 'App/Mailers/VerifyEmail'
 
 export default class User {
   public async onForgotPassword(data: EventsList['forgot:password']) {
@@ -17,7 +18,7 @@ export default class User {
   public async onVerifyEmail(data: EventsList['user:verifyEmail']) {
     const { user, token } = data
     try {
-      const email = new ForgotPassword(user, token)
+      const email = new VerifyEmail(user, token)
       await email.sendLater()
     } catch (error) {
       console.log(error)
