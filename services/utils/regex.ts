@@ -4,7 +4,7 @@ export default class Regex {
   }
 
   public static code() {
-      return /^[a-zA-Z0-9]{6}$/
+      return /^[A-Z0-9]{6}$/
   }
     
 }
