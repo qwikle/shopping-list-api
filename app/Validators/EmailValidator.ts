@@ -24,7 +24,11 @@ export default class EmailValidator {
    *    ```
    */
   public schema = schema.create({
-    email: schema.string({}, [rules.email(),rules.trim()]),
+    email: schema.string({}, [
+      rules.email(),
+      rules.trim(),
+      rules.exists({ table: 'users', column: 'email' }),
+    ]),
   })
 
   /**
