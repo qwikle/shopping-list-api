@@ -68,14 +68,14 @@ export default class AuthController {
 
   public async verifyEmail({ request, response, auth }: HttpContextContract) {
     const { email, token } = await request.validate(VerifyEmailValidator)
-    const user = auth.user!
+    const user = auth.user
     if (!(await TokenUtils.checkToken(email, token, TokenType.CHECK_EMAIL))) {
       return response.badRequest({ message: 'Invalid token.' })
     }
-    await user.merge({ verified: true }).save()
+    await user!.merge({ verified: true }).save()
     await TokenUtils.deleteToken(email, TokenType.CHECK_EMAIL)
-    await user.load('profile')
-    Event.emit('user:verified', { user })
+    await user!.load('profile')
+    Event.emit('user:verified', { user: user! })
     return response.send({ message: 'Email verified.' })
   }
 
@@ -87,9 +87,9 @@ export default class AuthController {
   public async checkToken({ request, response }: HttpContextContract) {
     const { email, token } = await request.validate(VerifyEmailValidator)
     if ((await TokenUtils.checkToken(email, token, TokenType.CHECK_EMAIL))) {
-      return response.redirect().toRoute('AuthController.verifyEmail', { email, token })
+      return response.redirect().withQs({ email, token }).toPath('/verify-email')
     } if ((await TokenUtils.checkToken(email, token, TokenType.RESET_PASSWORD))) {
-      return response.send({message: 'reset password.'})
+      return response.send({message: 'Reset password.'})
     }
     return response.badRequest({ message: 'Invalid token.' })
   }
@@ -104,6 +104,7 @@ export default class AuthController {
       await TokenUtils.deleteToken(email, type)
     }
     const token = await TokenUtils.setToken(email, type)
+    await user!.load('profile')
     await Event.emit('user:verifyEmail', { user: user!, token })
     return response.created({ message: 'Token sent.' })
   }
