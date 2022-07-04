@@ -31,6 +31,9 @@ Route.get('/verify-email', 'AuthController.verifyEmail').middleware('auth')
 Route.post('/resend-verification-code', 'AuthController.resendVerificationCode')
 Route.post('/logout', 'AuthController.logout')
 Route.post('/check-token', 'AuthController.checkToken')
+Route.any('*', async ({response}) => {
+    return response.notFound({message: 'Route not found'})
+})
 
 // Route.get('/', async () => {
 //   const user = User.create({
